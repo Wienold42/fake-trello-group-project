@@ -32,14 +32,16 @@ function LoginFormPage() {
   };
 
   return (
-    <>
+    <div id="login-box">
       <h1>Log In</h1>
       {errors.length > 0 &&
         errors.map((message) => <p key={message}>{message}</p>)}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className='login-form'>
         <label>
           Email
           <input
+            className="form-input"
+            placeholder="Email"
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -50,6 +52,8 @@ function LoginFormPage() {
         <label>
           Password
           <input
+            className="form-input"
+            placeholder=""
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -59,7 +63,7 @@ function LoginFormPage() {
         {errors.password && <p>{errors.password}</p>}
         <button type="submit">Log In</button>
       </form>
-    </>
+    </div>
   );
 }
 

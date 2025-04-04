@@ -39,53 +39,49 @@ function SignupFormModal() {
   };
 
   return (
-    <>
+    <div className='signup-box'>
       <h1>Sign Up</h1>
       {errors.server && <p>{errors.server}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email
-          <input
+      <form onSubmit={handleSubmit} className="signup-form">
+         <input
+            placeholder='Email'
+            className="form-input"
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </label>
         {errors.email && <p>{errors.email}</p>}
-        <label>
-          Username
-          <input
+        <input
+            placeholder='Username'
+            className="form-input"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
-        </label>
         {errors.username && <p>{errors.username}</p>}
-        <label>
-          Password
           <input
+            placeholder='Password'
+            className="form-input"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
         {errors.password && <p>{errors.password}</p>}
-        <label>
-          Confirm Password
-          <input
+        <input
+            placeholder='Confirm Password'
+            className="form-input"
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-        </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+        <button type="submit" id="signup-bttn">Sign Up</button>
       </form>
-    </>
+    </div>
   );
 }
 
