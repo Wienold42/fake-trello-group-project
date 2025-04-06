@@ -8,13 +8,13 @@ class Board(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("user.id")), nullable=False)
-    name = db.Column(db.String(35), nullable = False)
+    name = db.Column(db.String(55), nullable = False)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
 
-    user = db.relationship("User", back_populates="boards")
-    lists = db.relationship("List", back_populates="board", cascade="all, delete-orphan")
+    user = db.relationship("User", backref="boards")
+    lists = db.relationship("List", backref="board", cascade="all, delete-orphan")
 
     def to_dict(self):
         return {

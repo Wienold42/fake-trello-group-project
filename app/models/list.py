@@ -7,15 +7,15 @@ class List(db.Model):
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
 
-    id = db.Column(db.Integer, primaryKey = True)
+    id = db.Column(db.Integer, primary_key = True)
     board_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("boards.id")), nullable = False)
-    name = db.Column(db.String(35), nullable = False)
+    name = db.Column(db.String(55), nullable = False)
     position = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
-    board = db.Relationship("Board", back_populates="lists")
-    cards = db.Relationship("Card", back_populates="list", cascade="all, delete-orphan")
+    board = db.relationship("Board", back_populates="lists")
+    # cards = db.Relationship("Card", back_populates="list", cascade="all, delete-orphan")
 
     def to_dict(self):
         return {
