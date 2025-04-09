@@ -9,91 +9,91 @@ def seed_cards():
         name="Task 1",
         description="Something to do",
         position="1",
-        due_date="",
+        due_date=None,
     )
     card2 = Card(
         list_id="1",
         name="Task 2",
         description="Something to do",
         position="2",
-        due_date="",
+        due_date=None,
     )
     card3 = Card(
         list_id="1",
         name="Task 3",
         description="Something to do",
         position="3",
-        due_date="",
+        due_date=None,
     )
     card4 = Card(
         list_id="2",
         name="Task 4",
         description="Something to do",
         position="2",
-        due_date="",
+        due_date=None,
     )
     card5 = Card(
         list_id="2",
         name="Task 5",
         description="Something to do",
         position="1",
-        due_date="",
+        due_date=None,
     )
     card6 = Card(
         list_id="3",
         name="Task 6",
         description="Something to do",
         position="1",
-        due_date="",
+        due_date=None,
     )
     card7 = Card(
         list_id="3",
         name="Task 7",
         description="Something to do",
         position="2",
-        due_date="",
+        due_date=None,
     )
     card8 = Card(
         list_id="1",
         name="Task 1",
         description="Something to do",
         position="1",
-        due_date="",
+        due_date=None,
     )
     card9 = Card(
         list_id="1",
         name="Task 2",
         description="Something to do",
         position="2",
-        due_date="",
+        due_date=None,
     )
     card10 = Card(
         list_id="2",
         name="Task 3",
         description="Something to do",
         position="1",
-        due_date="",
+        due_date=None,
     )
     card11 = Card(
         list_id="3",
         name="Task 4",
         description="Something to do",
         position="1",
-        due_date="",
+        due_date=None,
     )
     card12 = Card(
         list_id="1",
         name="Task 1",
         description="Something to do",
         position="1",
-        due_date="",
+        due_date=None,
     )
     card13 = Card(
         list_id="2",
         name="Task 1",
         description="Something to do",
         position="1",
-        due_date="",
+        due_date=None,
     )
 
     db.session.bulk_save_objects([

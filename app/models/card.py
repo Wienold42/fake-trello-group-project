@@ -8,16 +8,16 @@ class Card(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    list_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('list.id')), nullable=False)
+    list_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('lists.id')), nullable=False)
     name = db.Column(db.String(100), nullable=False)
-    descripton = db.Column(db.Text)
+    description = db.Column(db.String())
     position = db.Column(db.Integer, nullable=False)
     due_date = db.Column(db.Date)
     createdAt = db.Column(db.DateTime, default=datetime.now, nullable=False)
     updatedAt = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)
 
-    comments = db.relationship('Comment', backref='comments', cascade='all, delete-orphan')
-    lists = db.relationship('List', backref='list')
+    comments = db.relationship('Comment', back_populates='card', cascade='all, delete-orphan')
+    list = db.relationship('List', back_populates='cards')
 
     def to_dict(self):
         return {
