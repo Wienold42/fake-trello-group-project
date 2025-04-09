@@ -62,6 +62,38 @@ def upgrade():
 
     if environment == "production":
         op.execute(f"ALTER TABLE lists SET SCHEMA {SCHEMA};")
+
+
+    op.create_table('cards',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('list_id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(100), nullable=False),
+    sa.Column('description', sa.String()),
+    sa.Column('position', sa.Integer(), nullable=False),
+    sa.Column('due_date', sa.DateTime()),
+    sa.Column('createdAt', sa.DateTime(), nullable = False),
+    sa.Column('updatedAt', sa.DateTime(), nullable=False),
+    sa.PrimaryKeyConstraint('id'),
+    sa.ForeignKeyConstraint(['list_id'], ['lists.id'])
+    )
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE cards SET SCHEMA {SCHEMA};")
+
+    op.create_table('comments',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('card_id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('content', sa.Text(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), nullable=False),
+    sa.PrimaryKeyConstraint('id'),
+    sa.ForeignKeyConstraint(['card_id'], ['cards.id']),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'])
+    )
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE comments SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###qqqqqqqqq
 
 
@@ -70,5 +102,6 @@ def downgrade():
     op.drop_table('users')
     op.drop_table('boards')
     op.drop_table('lists')
-    
+    op.drop_table('cards')
+    op.drop_table('comments')
     # ### end Alembic commands ###
