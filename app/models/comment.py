@@ -8,21 +8,22 @@ class Comment(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    card_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('card.id')), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('user.id')), nullable=False)
-    text = db.Column(db.Text)
-    createdAt = db.Column(db.DateTime, default=datetime.now, nullable=False)
-    updatedAt = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)
+    card_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('cards.id')), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)
 
-    users = db.relationship('User', backref='user')
-    cards = db.relationship('Card', backref='card')
+    card = db.relationship('Card', back_populates='comments')
+    user = db.relationship('User', back_populates='comments')
+
 
     def to_dict(self):
         return {
             'id': self.id,
             'card_id': self.card_id,
             'user_id': self.user_id,
-            'text': self.text,
-            'createdAt': self.createdAt,
-            'updatedAt': self.updatedAt,
+            'content': self.content,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at,
         }
