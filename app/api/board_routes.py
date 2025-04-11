@@ -37,6 +37,22 @@ def create_board():
 
     return jsonify(new_board.to_dict()), 201
 
+@boards_routes.route('/<int:board_id>', methods=['GET'])
+@login_required
+def get_board_by_id(board_id):
+    """
+    Retrieves a specific board by ID for the current user
+    """
+    board = Board.query.get(board_id)
+
+    if not board:
+        return jsonify({'error': 'Board not found'}), 404
+
+    if board.user_id != current_user.id:
+        return jsonify({'error': 'Unauthorized'}), 403
+
+    return jsonify(board.to_dict()), 200
+
 @boards_routes.route('/<int:board_id>', methods=['PUT'])
 @login_required
 def update_board(board_id):
