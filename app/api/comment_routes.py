@@ -19,5 +19,3 @@ def delete_comment(commentId):
     return jsonify({
         "message": "Comment deleted successfuly"
     }), 200
-
-

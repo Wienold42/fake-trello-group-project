@@ -6,7 +6,7 @@ card_routes = Blueprint('cards', __name__)
 
 
 ## Get comments for a card ##
-@card_routes.route('/<int:cardId/comments', methods=['GET'])
+@card_routes.route('/<int:cardId>/comments', methods=['GET'])
 @login_required
 def get_card_comments(cardId):
     comments = Comment.query.filter_by(card_id=cardId).all()
@@ -17,7 +17,7 @@ def get_card_comments(cardId):
     })
 
 ## Create a comment on a card ##
-@card_routes.route('/cards/<int: cardId>/comments', methods=["POST"])
+@card_routes.route('/<int:cardId>/comments', methods=["POST"])
 @login_required
 def create_comment(cardId):
     data = request.get_json()
@@ -35,7 +35,7 @@ def create_comment(cardId):
 
 
 ## Edit a card ##
-@card_routes.route('/cards/<int:cardId>', method=["PUT"])
+@card_routes.route('/<int:cardId>', methods=["PUT"])
 @login_required
 def update_card(cardId):
     data = request.get_json()
@@ -53,7 +53,7 @@ def update_card(cardId):
     return jsonify(card.to_dict()), 200
 
 ## Delete a card ##
-@card_routes.route('/cards/<int:cardId>', method=['DELETE'])
+@card_routes.route('/<int:cardId>', methods=['DELETE'])
 @login_required
 def delete_card(cardId):
     card = Card.query.get(cardId)
