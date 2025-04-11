@@ -7,27 +7,27 @@ def seed_comments():
     comment1 = Comment(
         card_id=1,
         user_id=1,
-        text="A comment",
+        content="A comment",
     )
     comment2 = Comment(
         card_id=1,
         user_id=1,
-        text="Comment #2",
+        content="Comment #2",
     )
     comment3 = Comment(
         card_id=8,
         user_id=1,
-        text="Create something",
+        content="Create something",
     )
     comment4 = Comment(
         card_id=8,
         user_id=1,
-        text="Fixed something",
+        content="Fixed something",
     )
     comment5 = Comment(
         card_id=10,
         user_id=1,
-        text="New comment",
+        content="New comment",
     )
 
     db.session.bulk_save_objects([

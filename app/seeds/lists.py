@@ -17,7 +17,7 @@ def seed_lists():
     list3 = List(
         board_id=1,
         name="completed",
-        psoition=3,
+        position=3,
     )
     list4 = List(
         board_id=2,
@@ -46,7 +46,8 @@ def seed_lists():
     )
     list9 = List(
         board_id=3,
-        name="completed"
+        name="completed",
+        position=3
     )
 
 
