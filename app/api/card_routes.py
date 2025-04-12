@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
 from app.models import Card, List, db,Comment
+from app.forms import CardForm, CommentForm
 
 card_routes = Blueprint('cards', __name__)
 
@@ -20,24 +21,27 @@ def get_card_comments(cardId):
 @card_routes.route('/<int:cardId>/comments', methods=["POST"])
 @login_required
 def create_comment(cardId):
-    data = request.get_json()
-    text = data.get('text')
+    form = CommentForm()
+    if form.validate_on_submit():
+        new_comment = comment(
+            content = form.content.data,
+            card_id = cardId,
+            user_id = current_user.id
+        )
+    db.session.add(new_comment)
+    db.session.commit
 
-    comment = Comment(
-        text=text,
-        user_id=current_user.id,
-        card_id=cardId
-    )
-
-    db.session.add(comment)
-    db.session.commit()
-    return jsonify(comment.to_dict()), 201
+    return jsonify({
+        'id': new_comment.id,
+        'content': new_comment.content,
+        'card_id': new_comment.card_id}), 201
 
 
 ## Edit a card ##
 @card_routes.route('/<int:cardId>', methods=["PUT"])
 @login_required
 def update_card(cardId):
+
     data = request.get_json()
     card = Card.query.get(cardId)
 
