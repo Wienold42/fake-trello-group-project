@@ -13,8 +13,8 @@ class Board(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
 
-    user = db.relationship("User", back_populates="boards")
-    lists = db.relationship("List", back_populates="boards", cascade="all, delete-orphan")
+    user = db.relationship("User", back_populates="board")
+    lists = db.relationship("List", back_populates="board", cascade="all, delete-orphan")
 
     def to_dict(self):
         return {

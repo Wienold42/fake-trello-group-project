@@ -16,7 +16,7 @@ class Card(db.Model):
     createdAt = db.Column(db.DateTime, default=datetime.now, nullable=False)
     updatedAt = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)
 
-    # comments = db.relationship('Comment', back_populates='cards', cascade='all, delete-orphan')
+    comments = db.relationship('Comment', back_populates='card', cascade='all, delete-orphan')
     list = db.relationship('List', back_populates='cards')
 
     def to_dict(self):
