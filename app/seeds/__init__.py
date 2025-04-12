@@ -22,14 +22,14 @@ def seed():
         # Make sure to add all your other model's undo functions below
         undo_users()
         undo_boards()
-        undo_cards()
         undo_lists()
+        undo_cards()
         undo_comments()
     seed_users()
     # Add other seed functions here
     seed_boards()
-    seed_cards()
     seed_lists()
+    seed_cards()
     seed_comments()
 
 
@@ -39,6 +39,6 @@ def undo():
     undo_users()
     # Add other undo functions here
     undo_boards()
-    undo_cards()
     undo_lists()
+    undo_cards()
     undo_comments()
