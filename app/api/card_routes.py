@@ -33,10 +33,9 @@ def create_comment(cardId):
 
     return jsonify({
             'id': new_comment.id,
-            'name': new_comment.name,
-            'description': new_comment.description,
-            "position": new_comment.position,
-            "due_date": new_comment.due_date,
+            'card_id': new_comment.card_id,
+            'user_id': new_comment.user_id,
+            "content": new_comment.content,
             "createdAt": new_comment.createdAt,
             "updatedAt": new_comment.updatedAt,}), 201
 
