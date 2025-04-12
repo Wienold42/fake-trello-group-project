@@ -26,7 +26,7 @@ def create_board():
     name = data.get('name')
     if not name or len(name.strip()) == 0:
         return jsonify({'error': 'Board name is required'}), 400
-    
+
     new_board = Board(
         user_id=current_user.id,
         name=name.strip()
@@ -99,6 +99,3 @@ def delete_board(board_id):
     db.session.commit()
 
     return jsonify({'message': 'Board deleted successfully'}), 200
-
-
-    
