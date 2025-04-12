@@ -6,4 +6,4 @@ from datetime import date
 
 
 class CommentForm(FlaskForm):
-    content = TextAreaField("content", validators=[DateField()])
+    content = TextAreaField("content", validators=[DataRequired()])

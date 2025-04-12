@@ -32,9 +32,13 @@ def create_comment(cardId):
     db.session.commit
 
     return jsonify({
-        'id': new_comment.id,
-        'content': new_comment.content,
-        'card_id': new_comment.card_id}), 201
+            'id': new_comment.id,
+            'name': new_comment.name,
+            'description': new_comment.description,
+            "position": new_comment.position,
+            "due_date": new_comment.due_date,
+            "createdAt": new_comment.createdAt,
+            "updatedAt": new_comment.updatedAt,}), 201
 
 
 ## Edit a card ##
@@ -42,19 +46,23 @@ def create_comment(cardId):
 @login_required
 def update_card(cardId):
 
-    data = request.get_json()
     card = Card.query.get(cardId)
-
-    #Do I need to validate for user???
-
-    card.list_id = data.get('list_id', card.list_id)
-    card.name = data.get('name', card.name)
-    card.description = data.get('position', card.position)
-    card.due_date = data.get('due_date', card.due_date)
-
-    db.session.commit()
-
-    return jsonify(card.to_dict()), 200
+    form = CardForm()
+    if card and form.validate_on_submit():
+        card.name = form.name.data,
+        card.description = form.description.data,
+        card.position = form.description.data,
+        card.due_date = form.card.data,
+        db.session.commit()
+        return jsonify({
+            'id': card.id,
+            'name': card.name,
+            'description': card.description,
+            "position": card.position,
+            "due_date": card.due_date,
+            "createdAt": card.createdAt,
+            "updatedAt": card.updatedAt,
+                        }), 200
 
 ## Delete a card ##
 @card_routes.route('/<int:cardId>', methods=['DELETE'])
