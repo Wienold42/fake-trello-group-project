@@ -23,7 +23,7 @@ def get_card_comments(cardId):
 def create_comment(cardId):
     form = CommentForm()
     if form.validate_on_submit():
-        new_comment = comment(
+        new_comment = Comment(
             content = form.content.data,
             card_id = cardId,
             user_id = current_user.id
