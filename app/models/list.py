@@ -15,7 +15,7 @@ class List(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     board = db.relationship("Board", back_populates="lists")
-    cards = db.relationship("Card", back_populates="list", cascade="all, delete-orphan")
+    cards = db.relationship("Card", back_populates="lists", cascade="all, delete-orphan")
 
     def to_dict(self):
         return {
