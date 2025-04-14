@@ -56,8 +56,8 @@ def upgrade():
     sa.Column('position', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
-    sa.PrimaryKeyConstraint('id'),  
-    sa.ForeignKeyConstraint(['board_id'], ['boards.id'],),          
+    sa.PrimaryKeyConstraint('id'),
+    sa.ForeignKeyConstraint(['board_id'], ['boards.id'],),
     )
 
     if environment == "production":
@@ -85,8 +85,8 @@ def upgrade():
     sa.Column('card_id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('content', sa.Text(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), nullable=False),
-    sa.Column('updated_at', sa.DateTime(), nullable=False),
+    sa.Column('createdAt', sa.DateTime(), nullable=False),
+    sa.Column('updatedAt', sa.DateTime(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.ForeignKeyConstraint(['card_id'], ['cards.id']),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'])

@@ -1,12 +1,14 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
-from app.models import db, Board
+from app.models import db, Board, List
 from app.forms.board_form import BoardForm
-from datetime import datetime
+from app.forms.list_form import ListForm
+from datetime import datetime, date
 
 boards_routes = Blueprint('boards', __name__, url_prefix='/api/boards')
 
-@boards_routes.route('', methods=['GET'])
+
+@boards_routes.route('/', methods=['GET'])
 @login_required
 def get_boards():
     """
@@ -16,7 +18,33 @@ def get_boards():
     return jsonify({'boards': [board.to_dict() for board in boards]}), 200
 
 
-@boards_routes.route('', methods=['POST'])
+@boards_routes.route('/<int:board_id>/lists', methods=['POST'])
+@login_required
+def create_list(board_id):
+    """
+    Create a new list in a board
+    """
+    form = ListForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    max_position = db.session.query(db.func.max(List.position)).filter_by(board_id=board_id).scalar()
+    next_position = (max_position or 0) + 1
+
+
+    if form.validate_on_submit():
+        new_list = List(
+            board_id=board_id,
+            name = form.data['name'],
+            position = int(next_position)
+        )
+
+        db.session.add(new_list)
+        db.session.commit()
+        return jsonify(new_list.to_dict()), 200
+
+    return form.errors, 400
+
+@boards_routes.route('/', methods=['POST'])
 @login_required
 def create_board():
     """
@@ -36,6 +64,24 @@ def create_board():
     db.session.commit()
 
     return jsonify(new_board.to_dict()), 201
+
+@boards_routes.route('/<int:board_id>/lists', methods=['GET'])
+@login_required
+def get_lists(board_id):
+    """
+    Get all lists for a specific board
+    """
+    board = Board.query.get(board_id)
+
+    if not board:
+        return jsonify({'error': 'Board not found'}), 404
+
+    if board.user_id != current_user.id:
+        return jsonify({'error': 'Unauthorized'}), 403
+
+
+    lists = List.query.filter_by(board_id=board_id).order_by(List.position).all()
+    return jsonify({'lists': [list.to_dict() for list in lists]}), 200
 
 @boards_routes.route('/<int:board_id>', methods=['GET'])
 @login_required
@@ -74,7 +120,7 @@ def update_board(board_id):
         return jsonify({'error': 'Board name is required'}), 400
 
     board.name = name.strip()
-    board.updated_at = datetime.utcnow()
+    board.updated_at = datetime.now()
 
     db.session.commit()
 
