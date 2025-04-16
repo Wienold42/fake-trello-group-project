@@ -3,12 +3,14 @@ import {
   applyMiddleware,
   compose,
   combineReducers,
+  boardRecuer
 } from "redux";
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
+  board: boardRecuer,
 });
 
 let enhancer;
