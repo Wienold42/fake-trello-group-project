@@ -3,14 +3,18 @@ import {
   applyMiddleware,
   compose,
   combineReducers,
-  boardsRecuer
 } from "redux";
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
+import boardsReducer from "./boardsReducer";
+import cardsReducer from "./cardsReducer";
+import commentsReducer from "./commentsReducer";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
-  board: boardsRecuer,
+  boards: boardsReducer,
+  cards: cardsReducer,
+  comments: commentsReducer
 });
 
 let enhancer;
