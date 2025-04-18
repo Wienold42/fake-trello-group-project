@@ -13,8 +13,8 @@ class Card(db.Model):
     description = db.Column(db.String())
     position = db.Column(db.Integer, nullable=False)
     due_date = db.Column(db.Date)
-    createdAt = db.Column(db.DateTime, default=datetime.now, nullable=False)
-    updatedAt = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)
 
     comments = db.relationship('Comment', back_populates='card', cascade='all, delete-orphan')
     list = db.relationship('List', back_populates='cards')

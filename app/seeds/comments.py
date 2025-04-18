@@ -11,12 +11,12 @@ def seed_comments():
     )
     comment2 = Comment(
         card_id=1,
-        user_id=1,
+        user_id=2,
         content="Comment #2",
     )
     comment3 = Comment(
         card_id=8,
-        user_id=1,
+        user_id=3,
         content="Create something",
     )
     comment4 = Comment(
