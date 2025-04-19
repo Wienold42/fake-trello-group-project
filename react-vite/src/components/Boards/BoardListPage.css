@@ -1,0 +1,64 @@
+.boards-container {
+  padding: 20px;
+  min-height: 100vh;
+  background-color: #f4f5f7;
+}
+
+.boards-title {
+  color: #172b4d;
+  font-size: 24px;
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+.boards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 10px;
+}
+
+.board-card {
+  background-color: #fff;
+  border-radius: 3px;
+  padding: 10px;
+  min-height: 100px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-decoration: none;
+  color: inherit;
+}
+
+.board-card:hover {
+  background-color: #f0f0f0;
+}
+
+.board-card h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #172b4d;
+}
+
+.create-board {
+  background-color: rgba(9, 30, 66, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-board:hover {
+  background-color: rgba(9, 30, 66, 0.08);
+}
+
+.create-board h3 {
+  color: #5e6c84;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 18px;
+  color: #172b4d;
+} 

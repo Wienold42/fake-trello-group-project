@@ -4,6 +4,8 @@ import SignupFormPage from '../components/SignupFormPage';
 import Card from '../components/Cards/Card';
 import CreateCardForm from '../components/cards/CreateCardForm';
 import CardDetailsModal from '../components/cards/CardDetailsModal';
+import BoardViewPage from '../components/boards/BoardViewPage';
+import BoardListPage from '../components/boards/BoardListPage';
 import Layout from './Layout';
 // import { Navigate } from 'react-router-dom';
 
@@ -13,7 +15,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <h1>Welcome!</h1>,
+        element: <BoardListPage />,
       },
       {
         path: "login",
@@ -22,6 +24,10 @@ export const router = createBrowserRouter([
       {
         path: "signup",
         element: <SignupFormPage />,
+      },
+      {
+        path: "boards/:boardId",
+        element: <BoardViewPage />,
       },
       {
         path: "boards/:boardId/cards/:cardId",
