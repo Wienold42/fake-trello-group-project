@@ -27,6 +27,6 @@ class Card(db.Model):
             'description': self.description,
             'position': self.position,
             'due_date': self.due_date,
-            'createdAt': self.createdAt,
-            'updatedAt': self.updatedAt,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at,
         }
