@@ -8,14 +8,15 @@ from datetime import datetime, date
 list_routes = Blueprint('lists', __name__, url_prefix='/api/lists')
 
 ### Get Cards for a list
+@list_routes.route('', methods=['GET'])
 @list_routes.route('/<int:listId>/cards', methods=['GET'])
 @login_required
 def get_cards(listId):
+    list = List.query.get(listId)
+    if not list:
+        return jsonify({'error': 'List not found'}), 404
+    
     cards = Card.query.filter_by(list_id=listId).all()
-
-    if not cards:
-        return jsonify({'error': 'Cards not found'}), 404
-
 
     return jsonify({'cards':[
         card.to_dict() for card in cards]})
@@ -39,7 +40,7 @@ def get_lists(board_id):
     lists = List.query.filter_by(board_id=board_id).order_by(List.position.all())
     return jsonify({'lists': [lst.todict for lst in lists]}), 200 """
 
-
+@list_routes.route('', methods=['POST'])
 @list_routes.route('/<int:listId>/cards', methods=['POST'])
 @login_required
 def create_card(listId):
@@ -85,7 +86,7 @@ def create_list(board_id):
 
     return form.errors, 400 """
 
-
+@list_routes.route('', methods=['PUT'])
 @list_routes.route('/<int:list_id>', methods=['PUT'])
 @login_required
 def update_list(list_id):
@@ -114,7 +115,8 @@ def update_list(list_id):
 
     return form.errors, 400
 
-@list_routes.route('<int:list_id>', methods=['DELETE'])
+@list_routes.route('', methods=['DELETE'])
+@list_routes.route('/<int:list_id>', methods=['DELETE'])
 @login_required
 def delete_list(list_id):
     """

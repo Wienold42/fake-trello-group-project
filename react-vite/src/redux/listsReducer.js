@@ -1,4 +1,3 @@
-
 const FETCH_LISTS_REQUEST = 'lists/FETCH_LISTS_REQUEST';
 const FETCH_LISTS_SUCCESS = 'lists/FETCH_LISTS_SUCCESS';
 const FETCH_LISTS_FAILURE = 'lists/FETCH_LISTS_FAILURE';
@@ -18,6 +17,8 @@ const DELETE_LIST_FAILURE = 'lists/DELETE_LIST_FAILURE';
 const FETCH_LIST_CARDS_REQUEST = 'lists/FETCH_LIST_CARDS_REQUEST';
 const FETCH_LIST_CARDS_SUCCESS = 'lists/FETCH_LIST_CARDS_SUCCESS';
 const FETCH_LIST_CARDS_FAILURE = 'lists/FETCH_LIST_CARDS_FAILURE';
+
+const ADD_CARD_TO_LIST = 'lists/ADD_CARD_TO_LIST';
 
 const fetchListsRequest = () => ({ type: FETCH_LISTS_REQUEST });
 const fetchListsSuccess = (lists) => ({ type: FETCH_LISTS_SUCCESS, payload: lists });
@@ -41,6 +42,11 @@ const fetchListCardsSuccess = (listId, cards) => ({
     payload: { listId, cards },
 });
 const fetchListCardsFailure = (error) => ({ type: FETCH_LIST_CARDS_FAILURE, payload: error });
+
+export const addCardToList = (card) => ({
+    type: ADD_CARD_TO_LIST,
+    payload: card
+});
 
 export const fetchLists = (boardId) => async (dispatch) => {
     dispatch(fetchListsRequest());
@@ -102,10 +108,19 @@ export const deleteList = (listId) => async (dispatch) => {
 export const fetchListCards = (listId) => async (dispatch) => {
     dispatch(fetchListCardsRequest());
     try {
-        const res = await fetch(`/api/lists/${listId}/cards`);
+        const res = await fetch(`/api/lists/${listId}/cards`, {
+            credentials: 'include'
+        });
+        
+        // If the list doesn't exist or has no cards, return an empty array
+        if (res.status === 404) {
+            dispatch(fetchListCardsSuccess(listId, []));
+            return;
+        }
+        
         if (!res.ok) throw new Error('Failed to fetch cards for list');
         const data = await res.json();
-        dispatch(fetchListCardsSuccess(listId, data.cards));
+        dispatch(fetchListCardsSuccess(listId, data.cards || []));
     } catch (err) {
         dispatch(fetchListCardsFailure(err.message));
     }
@@ -162,6 +177,19 @@ export default function listsReducer(state = initialState, action) {
                     [action.payload.listId]: action.payload.cards,
                 },
             };
+
+        case ADD_CARD_TO_LIST: {
+            const card = action.payload;
+            const listId = card.list_id;
+            const existingCards = state.cardsByListId[listId] || [];
+            return {
+                ...state,
+                cardsByListId: {
+                    ...state.cardsByListId,
+                    [listId]: [...existingCards, card]
+                }
+            };
+        }
 
         case FETCH_LISTS_FAILURE:
         case FETCH_LIST_CARDS_FAILURE:

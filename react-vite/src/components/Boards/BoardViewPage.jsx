@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';  
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBoard } from '../../redux/boardsReducer';
 import { fetchLists } from '../../redux/listsReducer';
-import List from '../Lists/List';
+import List from '../lists/List';
+import CreateListModal from '../Lists/CreateListModal';
 import './BoardViewPage.css';
 
 function BoardViewPage() {
@@ -14,10 +15,13 @@ function BoardViewPage() {
   const board = boardsState?.byId?.[boardId];
   const lists = listsState?.byId || {};
   const listsArray = Object.values(lists).filter(list => list.board_id === parseInt(boardId));
+  const [showCreateListModal, setShowCreateListModal] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchBoard(boardId));
-    dispatch(fetchLists(boardId));
+    if (boardId) {
+      dispatch(fetchBoard(boardId));
+      dispatch(fetchLists(boardId));
+    }
   }, [dispatch, boardId]);
 
   if (boardsState.loading || !board) {
@@ -31,7 +35,21 @@ function BoardViewPage() {
         {listsArray.map(list => (
           <List key={list.id} list={list} />
         ))}
+        <div className="add-list-container">
+          <button 
+            className="add-list-button"
+            onClick={() => setShowCreateListModal(true)}
+          >
+            + Add a list
+          </button>
+        </div>
       </div>
+      {showCreateListModal && (
+        <CreateListModal 
+          boardId={boardId} 
+          onClose={() => setShowCreateListModal(false)} 
+        />
+      )}
     </div>
   );
 }

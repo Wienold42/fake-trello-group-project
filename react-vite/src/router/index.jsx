@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import Card from '../components/Cards/Card';
-import CreateCardForm from '../components/cards/CreateCardForm';
+import CreateCardModal from '../components/Cards/CreateCardModal';
 import CardDetailsModal from '../components/cards/CardDetailsModal';
 import BoardViewPage from '../components/boards/BoardViewPage';
 import BoardListPage from '../components/boards/BoardListPage';
@@ -39,7 +39,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "boards/:boardId/cards/new",
-        element: <CreateCardForm />,
+        element: <CreateCardModal />,
       },
       {
         path: "cards/:cardId",

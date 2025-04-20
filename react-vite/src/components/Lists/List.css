@@ -15,34 +15,32 @@
   margin-bottom: 8px;
 }
 
+.list-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .list-header h3 {
   margin: 0;
   font-size: 14px;
   font-weight: 600;
-  color: #172b4d;
   cursor: pointer;
-  padding: 4px;
-  border-radius: 3px;
-}
-
-.list-header h3:hover {
-  background-color: rgba(9, 30, 66, 0.08);
+  flex-grow: 1;
 }
 
 .list-header input {
   width: 100%;
   padding: 4px 8px;
-  border: none;
+  border: 2px solid #0079bf;
   border-radius: 3px;
   font-size: 14px;
-  font-weight: 600;
-  background-color: #fff;
-  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+  line-height: 20px;
+  margin: 0;
 }
 
 .list-header input:focus {
   outline: none;
-  box-shadow: 0 0 0 2px #0079bf;
 }
 
 .cards-container {
@@ -51,24 +49,44 @@
   padding: 0 4px;
 }
 
-.add-card-container {
+.list-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   margin-top: 8px;
   padding: 4px;
 }
 
 .add-card-button {
-  width: 100%;
-  padding: 8px;
+  background: none;
   border: none;
-  border-radius: 3px;
-  background-color: transparent;
-  color: #5e6c84;
-  font-size: 14px;
-  text-align: left;
+  color: #6b778c;
   cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 14px;
+  width: 100%;
+  text-align: left;
 }
 
 .add-card-button:hover {
+  background-color: rgba(9, 30, 66, 0.08);
+  color: #172b4d;
+}
+
+.delete-list-button {
+  background: none;
+  border: none;
+  color: #6b778c;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 14px;
+  width: 100%;
+  text-align: left;
+}
+
+.delete-list-button:hover {
   background-color: rgba(9, 30, 66, 0.08);
   color: #172b4d;
 } 

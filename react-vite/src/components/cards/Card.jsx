@@ -12,6 +12,7 @@ import {
   deleteComment,
 } from "../../redux/commentsReducer";
 import { useParams, useNavigate } from "react-router-dom";
+import './Card.css';
 
 export default function Card() {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ export default function Card() {
   const { cardId } = useParams();
 
   const card = useSelector((state) => state.cards.byId[cardId]);
-  const comments = useSelector((state) => state.comments.byId);
+  const comments = useSelector((state) => state.comments.byCardId[cardId] || {});
   const user = useSelector((state) => state.session.user);
 
   const [editMode, setEditMode] = useState(false);
@@ -27,10 +28,17 @@ export default function Card() {
     name: "",
     description: "",
     due_date: "",
+    list_id: null
   });
   const [newComment, setNewComment] = useState("");
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editingCommentText, setEditingCommentText] = useState("");
+
+  const formatDateForInput = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
+  };
 
   useEffect(() => {
     dispatch(fetchCard(cardId));
@@ -42,13 +50,15 @@ export default function Card() {
       setFormData({
         name: card.name,
         description: card.description || "",
-        due_date: card.due_date || "",
+        due_date: formatDateForInput(card.due_date),
+        list_id: card.list_id
       });
     }
   }, [card]);
 
   const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSave = () => {
@@ -82,125 +92,130 @@ export default function Card() {
 
   const handleCommentDelete = async (commentId) => {
     if (window.confirm("Delete this comment?")) {
-      await dispatch(deleteComment(commentId));
+      await dispatch(deleteComment(commentId, cardId));
     }
   };
 
   if (!card) return <div>Loading card...</div>;
 
   return (
-    <div >
+    <div className="card-detail-container">
       {editMode ? (
         <>
           <input
+            className="card-input"
             name="name"
             value={formData.name}
             onChange={handleChange}
             placeholder="Card name"
           />
           <textarea
-
+            className="card-textarea"
             name="description"
             value={formData.description}
             onChange={handleChange}
             placeholder="Description"
           />
           <input
-
+            className="card-input"
             type="date"
             name="due_date"
             value={formData.due_date}
             onChange={handleChange}
           />
-          <div >
-            <button onClick={handleSave} >
+          <div className="card-actions">
+            <button className="card-button edit-button" onClick={handleSave}>
               Save
             </button>
-            <button onClick={() => setEditMode(false)} >
+            <button className="card-button" onClick={() => setEditMode(false)}>
               Cancel
             </button>
           </div>
         </>
       ) : (
         <>
-          <h2 >{card.name}</h2>
-          <p>{card.description}</p>
-          {card.due_date && <p>Due: {card.due_date}</p>}
-          <div >
-            <button onClick={() => setEditMode(true)} >
+          <div className="card-header">
+            <h2 className="card-title">{card.name}</h2>
+            <p className="card-description">{card.description}</p>
+            {card.due_date && <p className="card-due-date">Due: {card.due_date}</p>}
+          </div>
+          <div className="card-actions">
+            <button className="card-button edit-button" onClick={() => setEditMode(true)}>
               Edit Card
             </button>
-            <button onClick={handleDelete}>
+            <button className="card-button delete-button" onClick={handleDelete}>
               Delete Card
             </button>
           </div>
         </>
       )}
 
-      <hr />
+      <div className="comments-section">
+        <h3 className="comments-title">Comments</h3>
+        <form onSubmit={handleCommentSubmit} className="comment-form">
+          <textarea
+            className="comment-textarea"
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            placeholder="Add a comment"
+          />
+          <button type="submit" className="comment-submit">
+            Add Comment
+          </button>
+        </form>
 
-      <h3>Comments</h3>
-      <form onSubmit={handleCommentSubmit} >
-        <textarea
+        <ul className="comments-list">
+          {Object.values(comments).map((comment) => (
+            <li key={comment.id} className="comment-item">
+              <div className="comment-header">
+                <span className="comment-username">
+                  {comment.username || `User ${comment.user_id}`}
+                </span>
+              </div>
 
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          placeholder="Add a comment"
-        />
-        <button type="submit" >
-          Add Comment
-        </button>
-      </form>
-
-      <ul >
-        {Object.values(comments).map((comment) => (
-          <li key={comment.id} >
-            <div >
-              {comment.username || `User ${comment.user_id}`}
-            </div>
-
-            {editingCommentId === comment.id ? (
-              <form onSubmit={handleCommentEditSubmit}>
-                <textarea
-
-                  value={editingCommentText}
-                  onChange={(e) => setEditingCommentText(e.target.value)}
-                />
-                <div >
-                  <button type="submit" >Save</button>
-                  <button
-                    type="button"
-                    onClick={() => setEditingCommentId(null)}
-
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            ) : (
-              <>
-                <p>{comment.content}</p>
-                {user?.id === comment.user_id && (
-                  <div className="text-sm flex gap-4 mt-1">
+              {editingCommentId === comment.id ? (
+                <form onSubmit={handleCommentEditSubmit}>
+                  <textarea
+                    className="comment-textarea"
+                    value={editingCommentText}
+                    onChange={(e) => setEditingCommentText(e.target.value)}
+                  />
+                  <div className="card-actions">
+                    <button type="submit" className="card-button edit-button">Save</button>
                     <button
-                      onClick={() => handleCommentEdit(comment.id, comment.content)}
-
+                      type="button"
+                      className="card-button"
+                      onClick={() => setEditingCommentId(null)}
                     >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleCommentDelete(comment.id)}
-
-                    >
-                      Delete
+                      Cancel
                     </button>
                   </div>
-                )}
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
+                </form>
+              ) : (
+                <>
+                  <p className="comment-content">{comment.content}</p>
+                  {user?.id === comment.user_id && (
+                    <div className="comment-actions">
+                      <button
+                        className="comment-button"
+                        onClick={() => handleCommentEdit(comment.id, comment.content)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="comment-button"
+                        onClick={() => handleCommentDelete(comment.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

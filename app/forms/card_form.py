@@ -10,6 +10,7 @@ def date_check(form, field):
     return None
 
 class CardForm(FlaskForm):
+    list_id = IntegerField("List ID", validators=[DataRequired()])
     name = StringField("Name", validators=[DataRequired()])
     description = StringField('Description', validators=[DataRequired()])
     due_date = DateField('Due Date')

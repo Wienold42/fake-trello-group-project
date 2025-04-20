@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+import { addCardToList } from './listsReducer';
 
 const CREATE_CARD_REQUEST = 'cards/CREATE_CARD_REQUEST';
 const CREATE_CARD_SUCCESS = 'cards/CREATE_CARD_SUCCESS';
@@ -36,7 +38,9 @@ const deleteCardFailure = (error) => ({ type: DELETE_CARD_FAILURE, payload: erro
 export const fetchCard = (cardId) => async (dispatch) => {
   dispatch(getCardRequest());
   try {
-    const res = await fetch(`/api/cards/${cardId}`);
+    const res = await fetch(`/api/cards/${cardId}`, {
+      credentials: 'include'
+    });
     if (!res.ok) throw new Error("Failed to fetch card");
     const data = await res.json();
     dispatch(getCardSuccess(data));
@@ -48,26 +52,45 @@ export const fetchCard = (cardId) => async (dispatch) => {
 export const createCard = (cardData) => async (dispatch) => {
   dispatch(createCardRequest());
   try {
+    const formData = new URLSearchParams();
+    formData.append("csrf_token", Cookies.get("XSRF-TOKEN"));
+    formData.append("list_id", cardData.list_id);
+    formData.append("name", cardData.name);
+    formData.append("description", cardData.description || "");
+    formData.append("due_date", cardData.due_date || "");
+
     const res = await fetch(`/api/cards`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(cardData),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: formData,
     });
     if (!res.ok) throw new Error("Failed to create card");
     const data = await res.json();
     dispatch(createCardSuccess(data));
+    dispatch(addCardToList(data));
+    return data;
   } catch (err) {
     dispatch(createCardFailure(err.message));
+    return { error: err.message };
   }
 };
 
 export const updateCard = (cardId, updates) => async (dispatch) => {
   dispatch(updateCardRequest());
   try {
+    const formData = new URLSearchParams();
+    formData.append("csrf_token", Cookies.get("XSRF-TOKEN"));
+    formData.append("list_id", updates.list_id);
+    formData.append("name", updates.name);
+    formData.append("description", updates.description);
+    if (updates.due_date) {
+      formData.append("due_date", updates.due_date);
+    }
+
     const res = await fetch(`/api/cards/${cardId}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updates),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: formData,
     });
     if (!res.ok) throw new Error("Failed to update card");
     const data = await res.json();

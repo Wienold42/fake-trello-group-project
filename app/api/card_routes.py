@@ -7,6 +7,7 @@ card_routes = Blueprint('cards', __name__, url_prefix='/api/cards')
 
 
 ## Get comments for a card ##
+@card_routes.route('', methods=['GET'])
 @card_routes.route('/<int:cardId>/comments', methods=['GET'])
 @login_required
 def get_card_comments(cardId):
@@ -36,6 +37,7 @@ def create_comment(cardId):
     return jsonify(new_comment.to_dict()), 201
 
 #Get specific card
+@card_routes.route('', methods=["GET"])
 @card_routes.route('/<int:cardId>', methods=["GET"])
 @login_required
 def get_card_details(cardId):
@@ -47,6 +49,7 @@ def get_card_details(cardId):
     return jsonify(card.to_dict()), 200
 
 ## Edit a card ##
+@card_routes.route('', methods=["PUT"])
 @card_routes.route('/<int:cardId>', methods=["PUT"])
 @login_required
 def update_card(cardId):
@@ -73,6 +76,7 @@ def update_card(cardId):
     return jsonify({'errors': form.errors}), 400
 
 ## Delete a card ##
+@card_routes.route('', methods=['DELETE'])
 @card_routes.route('/<int:cardId>', methods=['DELETE'])
 @login_required
 def delete_card(cardId):
@@ -93,3 +97,28 @@ def delete_card(cardId):
     return jsonify({
         "message": "Card deleted successfuly"
     })
+
+## Create a card ##
+@card_routes.route('', methods=["POST"])
+@login_required
+def create_card():
+    form = CardForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
+        # Get the maximum position for the list
+        max_position = db.session.query(db.func.max(Card.position)).filter_by(list_id=form.list_id.data).scalar()
+        next_position = (max_position or 0) + 1
+
+        new_card = Card(
+            list_id=form.list_id.data,
+            name=form.name.data,
+            description=form.description.data,
+            position=next_position,
+            due_date=form.due_date.data
+        )
+        db.session.add(new_card)
+        db.session.commit()
+        return jsonify(new_card.to_dict()), 201
+
+    return jsonify({"errors": form.errors}), 400

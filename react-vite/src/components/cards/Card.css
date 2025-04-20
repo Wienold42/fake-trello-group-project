@@ -1,0 +1,162 @@
+.card-detail-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f4f5f7;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #172b4d;
+  margin-bottom: 10px;
+}
+
+.card-description {
+  color: #5e6c84;
+  margin-bottom: 15px;
+  white-space: pre-wrap;
+}
+
+.card-due-date {
+  color: #5e6c84;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.card-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.edit-button {
+  background-color: #e4f0f6;
+  color: #0079bf;
+}
+
+.delete-button {
+  background-color: #eb5a46;
+  color: white;
+}
+
+.card-input {
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  border: 2px solid #0079bf;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+.card-textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  border: 2px solid #0079bf;
+  border-radius: 3px;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.comments-section {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #dfe1e6;
+}
+
+.comments-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #172b4d;
+  margin-bottom: 15px;
+}
+
+.comment-form {
+  margin-bottom: 20px;
+}
+
+.comment-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  border: 2px solid #dfe1e6;
+  border-radius: 3px;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.comment-submit {
+  background-color: #0079bf;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.comments-list {
+  list-style: none;
+  padding: 0;
+}
+
+.comment-item {
+  background-color: white;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.comment-username {
+  font-weight: 600;
+  color: #172b4d;
+}
+
+.comment-content {
+  color: #172b4d;
+  margin-bottom: 8px;
+}
+
+.comment-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.comment-button {
+  background: none;
+  border: none;
+  color: #5e6c84;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0;
+}
+
+.comment-button:hover {
+  color: #172b4d;
+} 

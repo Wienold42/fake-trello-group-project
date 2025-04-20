@@ -65,16 +65,30 @@ export const fetchBoard = (id) => async (dispatch) => {
 export const createBoard = (boardData) => async (dispatch) => {
     dispatch(createBoardRequest());
     try {
+        const csrfToken = document.cookie.split('; ')
+            .find(row => row.startsWith('csrf_token='))
+            ?.split('=')[1] || '';
+
         const res = await fetch(`/api/boards`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            credentials: 'include',
             body: JSON.stringify(boardData)
         });
-        if (!res.ok) throw new Error('Failed to create board');
-        const data = await res.json()
+
+        if (!res.ok) {
+            const data = await res.json();
+            throw new Error(data.error || 'Failed to create board');
+        }
+        const data = await res.json();
         dispatch(createBoardSuccess(data));
+        return data;
     } catch (err) {
         dispatch(createBoardFailure(err.message));
+        return { error: err.message };
     }
 }
 
@@ -122,7 +136,7 @@ export default function boardsReducer(state = initialState, action) {
 
         case FETCH_BOARDS_SUCCESS: {
             const boardsMap = {};
-            action.payload.forEach((board) => {
+            action.payload.boards.forEach((board) => {
                 boardsMap[board.id] = board;
             })
             return { ...state, loading: false, byId: boardsMap }
