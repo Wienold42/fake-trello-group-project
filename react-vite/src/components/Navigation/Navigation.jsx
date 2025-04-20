@@ -6,7 +6,11 @@ function Navigation() {
   return (
     <ul className="nav">
       <li className="home-box">
-        <NavLink to="/">Home</NavLink>
+        <NavLink to="/" id="home-bttn">Home</NavLink>
+      </li>
+      
+      <li>
+        <h1 id="logo">TRILLO</h1>
       </li>
 
       <li>

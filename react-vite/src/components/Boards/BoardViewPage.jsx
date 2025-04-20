@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBoard } from '../../redux/boardsReducer';
 import { fetchLists } from '../../redux/listsReducer';
-import List from '../lists/List';
+import List from '../Lists/List';
 import CreateListModal from '../Lists/CreateListModal';
 import './BoardViewPage.css';
 
