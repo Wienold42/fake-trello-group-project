@@ -7,7 +7,7 @@ import CardDetailsModal from '../components/cards/CardDetailsModal';
 import BoardViewPage from '../components/boards/BoardViewPage';
 import BoardListPage from '../components/boards/BoardListPage';
 import Layout from './Layout';
-// import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 export const router = createBrowserRouter([
   {
@@ -45,10 +45,10 @@ export const router = createBrowserRouter([
         path: "cards/:cardId",
         element: <CardDetailsModal/>, 
       },
-      // {
-      //   path: "*",
-      //   element: <Navigate to="/" replace={true} />,
-      // },
+      {
+        path: "*",
+        element: <Navigate to="/" replace={true} />,
+      },
     ],
   },
 ]);
