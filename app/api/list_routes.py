@@ -15,13 +15,13 @@ def get_cards(listId):
     list = List.query.get(listId)
     if not list:
         return jsonify({'error': 'List not found'}), 404
-    
+
     cards = Card.query.filter_by(list_id=listId).all()
 
     return jsonify({'cards':[
         card.to_dict() for card in cards]})
 
-##Moved to board routes
+## Moved to board routes
 """ @list_routes.route('/api/boards/<int:board_id>/lists', methods=['GET'])
 @login_required
 def get_lists(board_id):
